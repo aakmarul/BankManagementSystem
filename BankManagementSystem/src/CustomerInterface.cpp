@@ -1,7 +1,5 @@
 #include "CustomerInterface.h"
 
-//To learn type of any variable
-#include <typeinfo>
 
 CustomerInterface::CustomerInterface():m_invalidInputFlag(true), op(0)
 {
@@ -13,58 +11,78 @@ CustomerInterface::~CustomerInterface()
     //dtor
 }
 
-void CustomerInterface::getUserInputs()
+CustomerInterface::USER_CHOICE CustomerInterface::getUserInputs()
 {
-    std::cin>>op;
+    std::string userInput;
+    std::getline(std::cin, userInput);
 
-    int opInt = 0;
+    std::cout<<userInput<<" is selected"<<std::endl;
 
-    if(*(char*)(typeid(op).name()) != 'i')
+    //Check given input is an integer or not ?
+    if(!checkInputisInteger(userInput))
     {
-        opInt = 6; //invalid input
-        std::cout<<"invalid input !!!!!!!!!";
+        op = INVALID_INPUT; //Not defined operation code. This casuses re-select the operation.
     }
-    else{
-        opInt = op; //valid integer input
-    }
-
-    std::cout<<opInt<<" is selected"<<std::endl;
-
-    switch(opInt)
+    else
     {
-    case 1:
+        op = std::stoi(userInput);
+    }
+
+    USER_CHOICE choice = NO_CHOICE;
+    switch(op)
+    {
+    case CREATE_NEW_ACCOUNT:
         std::cout<<"Please wait... Starting New Account Template."<<std::endl;
         m_invalidInputFlag = false;
+        choice = CREATE_NEW_ACCOUNT;
         //Call the method that creates new Account.
         break;
-    case 2:
+    case SHOW_ACCOUNT_DETAILS:
         std::cout<<"Please enter the Social Security Number to access account details."<<std::endl;
         // Call the method that shows details of account.
         m_invalidInputFlag = false;
+        choice = SHOW_ACCOUNT_DETAILS;
         break;
-    case 3:
+    case DEPOSIT_MONEY:
         std::cout<<"Please enter the amount of money to deposit"<<std::endl;
         //Call the method that deposit money to account, it probably needs to be check which account to be."
         m_invalidInputFlag = false;
+        choice = DEPOSIT_MONEY;
         break;
-    case 4:
+    case WITHDRAW_MONEY:
         std::cout<<"Please enter the amount of money to withdraw"<<std::endl;
         //Call the method that withdraw money from account, it probably needs to be check which account to be."
         m_invalidInputFlag = false;
+        choice = WITHDRAW_MONEY;
         break;
-    case 5:
+    case EXIT:
         std::cout<<"Exiting.."<<std::endl;
         m_invalidInputFlag = false;
+        choice = EXIT;
         break;
     default:
-        std::cout<<"You entered the invalid number. Please try again..."<<std::endl;
+        std::cout<<"You entered the invalid input. Please try again..."<<std::endl;
         m_invalidInputFlag = true;
-        //Clear the line and wait new input
-        //getUserInputs();
+        choice = INVALID_INPUT;
+        //Later it may be added some warning, error output .
         break;
     }
+    return choice;
 
 }
+
+bool CustomerInterface::checkInputisInteger(std::string stringInput)
+{
+    for(int i = 0; i<stringInput.length(); i++)
+    {
+        if(isdigit(stringInput[i]) == false)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
 
 void CustomerInterface::initializeCustomerInterfaceSystem()
 {

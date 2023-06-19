@@ -11,6 +11,8 @@ class Bank
         virtual ~Bank();
         void initializeBankSystem();
 
+        void callTheOperations(CustomerInterface::USER_CHOICE);
+
 //        Account getAccount()
 
         void setAccount(Account* account)
