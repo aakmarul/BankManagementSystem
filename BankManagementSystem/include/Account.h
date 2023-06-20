@@ -9,14 +9,34 @@ class Account
         Account();
         virtual ~Account();
 
-        std::string getCustomerID() const
+        std::string getSocialSecurityNumber() const
         {
-            return m_customerID;
+            return m_socialSecurityNumber;
         }
 
-        void setCustomerID(std::string val)
+        void setSocialSecurityNumber(std::string socialSecurityNumber)
         {
-             m_customerID = val;
+             m_socialSecurityNumber = socialSecurityNumber;
+        }
+
+        std::string getCustomerName()
+        {
+            return m_name;
+        }
+
+        void setCustomerName(std::string name)
+        {
+            m_name = name;
+        }
+
+        std::string getCustomerSurname()
+        {
+            return m_surName;
+        }
+
+        void setCustomerSurname(std::string customerSurname)
+        {
+            m_surName = customerSurname;
         }
 
         float getCash() const
@@ -30,7 +50,9 @@ class Account
         }
 
     private:
-        std::string m_customerID;
+        std::string m_socialSecurityNumber;
+        std::string m_name;
+        std::string m_surName;
         float m_cash;
 };
 

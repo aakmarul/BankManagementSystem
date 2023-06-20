@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <string>
+#include <stdlib.h>
+#include "Account.h"
 
 class CustomerInterface
 {
@@ -22,6 +24,9 @@ class CustomerInterface
         }USER_CHOICE;
 
         void static initializeCustomerInterfaceSystem();
+
+        void AccountCreatorInterface(Account* account);
+
         USER_CHOICE getUserInputs();
 
         bool checkInputisInteger(std::string);

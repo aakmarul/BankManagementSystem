@@ -3,6 +3,7 @@
 
 #include <Account.h>
 #include <CustomerInterface.h>
+#include <string.h>
 
 class Bank
 {
@@ -13,7 +14,7 @@ class Bank
 
         void callTheOperations(CustomerInterface::USER_CHOICE);
 
-//        Account getAccount()
+        void createNewAccount();
 
         void setAccount(Account* account)
         {

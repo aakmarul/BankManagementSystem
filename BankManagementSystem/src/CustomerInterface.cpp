@@ -11,6 +11,27 @@ CustomerInterface::~CustomerInterface()
     //dtor
 }
 
+void CustomerInterface::AccountCreatorInterface(Account* account)
+{
+    std::string name;
+    std::string surName;
+    std::string ssNumber;
+
+    system("cls");
+    std::cout<<"Please fill the required information given in below!"<<std::endl;
+    std::cout<<"Name :";
+    std::getline(std::cin, name);
+    std::cout<<"Surname: ";
+    std::getline(std::cin, surName);
+    std::cout<<"Social Security Number: ";
+    std::getline(std::cin, ssNumber);
+    //Assume account created with 0.00 cash
+    account->setCustomerName(name);
+    account->setCustomerSurname(surName);
+    account->setSocialSecurityNumber(ssNumber); //TODO later check social security number is valid or not? 9 digit integer ?
+    account->setCash(0.00);
+}
+
 CustomerInterface::USER_CHOICE CustomerInterface::getUserInputs()
 {
     std::string userInput;

@@ -32,13 +32,13 @@ void Bank::callTheOperations(CustomerInterface::USER_CHOICE userChoice)
 {
     switch(userChoice)
     {
-
     case CustomerInterface::NO_CHOICE:
     case CustomerInterface::INVALID_INPUT:
         std::cout<<"This is an ERROR case! Operation shutting down!"<<std::endl; //TODO: implement shut down operation
         break;
     case CustomerInterface::CREATE_NEW_ACCOUNT:
         std::cout<<"Calling account creater"<<std::endl; //TODO implement account creater method
+        createNewAccount();
         break;
     case CustomerInterface::SHOW_ACCOUNT_DETAILS:
         std::cout<<"Showing account details"<<std::endl; //TODO implement show account details method
@@ -55,4 +55,12 @@ void Bank::callTheOperations(CustomerInterface::USER_CHOICE userChoice)
         break;
 
     }
+}
+
+void Bank::createNewAccount()
+{
+    //Receive the necessary information from customer to open new account
+    m_customerInterface->AccountCreatorInterface(m_account);
+    //All information received
+    //Check entered social security number has an account or not, If there is return error and asks to load existing account
 }
