@@ -36,12 +36,17 @@ class CustomerInterface
             return m_invalidInputFlag;
         }
 
+        void setInvalidInputFlag(bool flag)
+        {
+            m_invalidInputFlag = flag;
+        }
+
     protected:
 
     private:
         //FLAGS
         bool m_invalidInputFlag;
-
+        ///////
         int op;
 };
 

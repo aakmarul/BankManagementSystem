@@ -113,4 +113,5 @@ void CustomerInterface::initializeCustomerInterfaceSystem()
     std::cout<<"Press 3 for Deposit Your Account"<<std::endl;
     std::cout<<"Press 4 for Withdraw Your Money"<<std::endl;
     std::cout<<"Press 5 for exit"<<std::endl;
+    std::cout<<">> ";
 }

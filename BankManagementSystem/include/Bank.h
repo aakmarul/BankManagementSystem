@@ -4,17 +4,24 @@
 #include <Account.h>
 #include <CustomerInterface.h>
 #include <string.h>
+#include <fstream>
+#include <stdlib.h>
 
 class Bank
 {
     public:
         Bank();
         virtual ~Bank();
+
+        const std::string accountPath = "C:\\CodeblocksWorkspace\\BankManagementSystem\\src\\accounts\\";
+
         void initializeBankSystem();
 
         void callTheOperations(CustomerInterface::USER_CHOICE);
 
         void createNewAccount();
+
+        bool checkAccountExistence(std::string);
 
         void setAccount(Account* account)
         {

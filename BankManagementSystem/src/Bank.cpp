@@ -14,6 +14,9 @@ Bank::~Bank()
 
 void Bank::initializeBankSystem()
 {
+    //First clear the console screen
+    //system("cls");
+
     //First call interface system
     m_customerInterface->initializeCustomerInterfaceSystem();
 
@@ -24,6 +27,7 @@ void Bank::initializeBankSystem()
     }
     //Later call the execute and seperate initialization and functional operations
     //TODO Bank::execute(userChoice)
+    m_customerInterface->setInvalidInputFlag(true); //Flag set true to call interface later again take user inputs
     callTheOperations(userChoice);
 
 }
@@ -37,7 +41,6 @@ void Bank::callTheOperations(CustomerInterface::USER_CHOICE userChoice)
         std::cout<<"This is an ERROR case! Operation shutting down!"<<std::endl; //TODO: implement shut down operation
         break;
     case CustomerInterface::CREATE_NEW_ACCOUNT:
-        std::cout<<"Calling account creater"<<std::endl; //TODO implement account creater method
         createNewAccount();
         break;
     case CustomerInterface::SHOW_ACCOUNT_DETAILS:
@@ -63,4 +66,42 @@ void Bank::createNewAccount()
     m_customerInterface->AccountCreatorInterface(m_account);
     //All information received
     //Check entered social security number has an account or not, If there is return error and asks to load existing account
+    std::string ssNumber = m_account->getSocialSecurityNumber();
+    if(checkAccountExistence(ssNumber)) //if this returns true we can create the new account.
+    {
+        system("cls");
+        std::cout<<"NEW ACCOUNT CREATED!"<<std::endl;
+        initializeBankSystem();
+    }
+    else
+    {
+        system("cls");
+        std::cout<<"Account Already Exist!"<<std::endl;
+        initializeBankSystem();
+    }
+
+
+}
+
+bool Bank::checkAccountExistence(std::string str)
+{
+    std::fstream file;
+
+    std::string path= accountPath + str + ".txt";
+
+    file.open(path);
+
+    if(!file)
+    {
+        //if file does not exist we can create it! First close the input file object
+        file.open(path, std::fstream::in | std::fstream::out | std::fstream::trunc);
+
+        //Then fill the informations
+        file <<m_account->getSocialSecurityNumber()<<"\t"<<m_account->getCash()<<"\t"
+            <<m_account->getCustomerName()<<"\t"<<m_account->getCustomerSurname();
+        return true;
+    }
+    else{
+        return false;
+    }
 }
