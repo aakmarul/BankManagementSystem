@@ -3,8 +3,8 @@
 Bank::Bank()
 {
     //Call the Customer Interface and Account classes
-    setAccount(new Account());
-    setCustomerInterface(new CustomerInterface);
+    Bank::setAccount(new Account());
+    Bank::setCustomerInterface(new CustomerInterface);
 }
 
 Bank::~Bank()
@@ -45,6 +45,7 @@ void Bank::callTheOperations(CustomerInterface::USER_CHOICE userChoice)
         break;
     case CustomerInterface::SHOW_ACCOUNT_DETAILS:
         std::cout<<"Showing account details"<<std::endl; //TODO implement show account details method
+        showAccountDetails();
         break;
     case CustomerInterface::DEPOSIT_MONEY:
         std::cout<<"Enter the money to deposit"<<std::endl; //TODO implement deposit money input and deposit methods
@@ -58,6 +59,46 @@ void Bank::callTheOperations(CustomerInterface::USER_CHOICE userChoice)
         break;
 
     }
+}
+
+void Bank::showAccountDetails()
+{
+    std::string ssNumber; 
+    ssNumber = this->m_customerInterface->ShowAccountDetailsInterface();
+    readAccountDetails(ssNumber);
+    std::cout<<"Social Security Number: "<<this->getAccount().getSocialSecurityNumber()<<
+                "\tCash: "<<this->getAccount().getCash()<<"\tName: "<<this->getAccount().getCustomerName()<<
+                "\tSurname: "<<this->getAccount().getCustomerSurname()<<std::endl;
+}
+
+void Bank::readAccountDetails(std::string ssNumber)
+{
+    std::ifstream file;
+    std::string path = accountPath+ssNumber+".txt";
+
+    std::string details;
+
+    file.open(path);
+    if(!file)
+    {
+        std::cout<<"THERE IS NO RECORD RELATED WITH THESE SSNUMBER"; //TODO validate ssNumber is suitable or not? 9-digit integer.
+    }
+    else
+    {
+        std::string name;
+        std::string surname;
+        float cash;
+
+        file >> ssNumber >> cash >> name >> surname; 
+        //std::getline(file, details);
+        std::cout<<"Social Security Number: "<<ssNumber<<"\tCash: "<<cash<<"\tName: "<<name<<"\tSurname: "<<surname<<std::endl;
+        this->getAccount().setSocialSecurityNumber(ssNumber);
+        this->getAccount().setCash(cash);
+        this->getAccount().setCustomerName(name);
+        this->getAccount().setCustomerSurname(surname);
+    }
+
+    file.close();
 }
 
 void Bank::createNewAccount()
@@ -99,6 +140,7 @@ bool Bank::checkAccountExistence(std::string str)
         //Then fill the informations
         file <<m_account->getSocialSecurityNumber()<<"\t"<<m_account->getCash()<<"\t"
             <<m_account->getCustomerName()<<"\t"<<m_account->getCustomerSurname();
+        file.close();
         return true;
     }
     else{

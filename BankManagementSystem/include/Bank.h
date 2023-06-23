@@ -21,6 +21,10 @@ class Bank
 
         void createNewAccount();
 
+        void showAccountDetails();
+
+        void readAccountDetails(std::string);
+
         bool checkAccountExistence(std::string);
 
         void setAccount(Account* account)

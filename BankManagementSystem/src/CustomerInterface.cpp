@@ -11,6 +11,17 @@ CustomerInterface::~CustomerInterface()
     //dtor
 }
 
+std::string CustomerInterface::ShowAccountDetailsInterface()
+{
+    system("cls");
+    std::cout<<"Please enter the Social Security Number to Access Account Details"<<std::endl;
+    std::cout<<">> ";
+    std::string ssNumber;
+    std::getline(std::cin, ssNumber);
+
+    return ssNumber;
+}
+
 void CustomerInterface::AccountCreatorInterface(Account* account)
 {
     std::string name;

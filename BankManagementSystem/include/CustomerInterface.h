@@ -27,6 +27,8 @@ class CustomerInterface
 
         void AccountCreatorInterface(Account* account);
 
+        std::string ShowAccountDetailsInterface();
+
         USER_CHOICE getUserInputs();
 
         bool checkInputisInteger(std::string);
