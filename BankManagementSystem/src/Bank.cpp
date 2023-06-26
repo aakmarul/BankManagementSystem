@@ -20,15 +20,15 @@ void Bank::initializeBankSystem()
     //First call interface system
     m_customerInterface->initializeCustomerInterfaceSystem();
 
-    CustomerInterface::USER_CHOICE userChoice = CustomerInterface::NO_CHOICE;
+    //CustomerInterface::USER_CHOICE userChoice = CustomerInterface::NO_CHOICE;
     while(m_customerInterface->getInvalidInputFlag() == true)
     {
-        userChoice = m_customerInterface->getUserInputs();
+        setUserChoice(m_customerInterface->getUserInputs());
     }
     //Later call the execute and seperate initialization and functional operations
     //TODO Bank::execute(userChoice)
     m_customerInterface->setInvalidInputFlag(true); //Flag set true to call interface later again take user inputs
-    callTheOperations(userChoice);
+    callTheOperations(getUserChoice());
 
 }
 
@@ -44,14 +44,16 @@ void Bank::callTheOperations(CustomerInterface::USER_CHOICE userChoice)
         createNewAccount();
         break;
     case CustomerInterface::SHOW_ACCOUNT_DETAILS:
-        std::cout<<"Showing account details"<<std::endl; //TODO implement show account details method
+        std::cout<<"Showing account details"<<std::endl;
         showAccountDetails();
         break;
     case CustomerInterface::DEPOSIT_MONEY:
         std::cout<<"Enter the money to deposit"<<std::endl; //TODO implement deposit money input and deposit methods
+        makeTransaction(DEPOSIT);
         break;
     case CustomerInterface::WITHDRAW_MONEY:
         std::cout<<"Enter the money withdraw"<<std::endl; //TODO implement withdraw money input and withdraw methods
+        makeTransaction(WITHDRAW);
         break;
     case CustomerInterface::EXIT:
         std::cout<<"Exiting"<<std::endl; //TODO implement exit operation
@@ -61,12 +63,65 @@ void Bank::callTheOperations(CustomerInterface::USER_CHOICE userChoice)
     }
 }
 
-void Bank::showAccountDetails()
+void Bank::makeTransaction(TRANSACTION_TYPE ttype)
 {
-    std::string ssNumber; 
     ssNumber = this->m_customerInterface->ShowAccountDetailsInterface();
     readAccountDetails(ssNumber);
-    std::cout<<"Social Security Number: "<<this->getAccount().getSocialSecurityNumber()<<
+    executeTransactionProcess(ttype);
+}
+
+void Bank::executeTransactionProcess(TRANSACTION_TYPE ttype)
+{
+    if(ttype == DEPOSIT) //
+    {
+        double money;
+        
+        system("cls");
+        std::cout<<"Enter the money to deposit your account!"<<std::endl;
+        std::cout<<">> ";
+        std::cin>> money; //TODO check money is valid double format or not?
+        m_account->setCash(m_account->getCash() + money);
+        std::cout<<"The new cash is :"<<m_account->getCash()<<std::endl;
+        writeNewInformationToAccount();
+    }
+    else //WITHDRAW operation
+    {
+        double money; 
+
+        //system("cls");
+        std::cout<<"Enter the money withdraw from your account!"<<std::endl;
+        std::cout<<">> ";
+        std::cin>> money; //TODO check money is valid double format or not?
+        if(money > m_account->getCash())
+        {
+            //TODO throw error/warning. Entered money cannot be greater than cash value of the related account
+            system("cls");
+            std::cout<<"The amount to be withdrawn cannot be higher than the cash value in the account."<<std::endl;
+            //callTheOperations(CustomerInterface::WITHDRAW_MONEY); This pass eill be studied for now it ends the program.
+        }
+        else{
+            m_account->setCash(m_account->getCash()-money);
+            std::cout<<"The new cash is :"<<m_account->getCash()<<std::endl;
+            writeNewInformationToAccount();
+        }
+    }
+}
+
+void Bank::writeNewInformationToAccount()
+{
+    std::ofstream file; //opening ofstream file without ios::app flag erase all the info's in the .txt file.
+    std::string path = accountPath+m_account->getSocialSecurityNumber()+".txt";
+
+    file.open(path);
+    file<< m_account->getSocialSecurityNumber()<<"\t" << m_account->getCash() <<"\t"<<
+        m_account->getCustomerName() <<"\t"<< m_account->getCustomerSurname();
+}
+
+void Bank::showAccountDetails()
+{
+    ssNumber = this->m_customerInterface->ShowAccountDetailsInterface();
+    readAccountDetails(ssNumber);
+    std::cout<<"Social Security Number: "<<m_account->getSocialSecurityNumber()<<
                 "\tCash: "<<this->getAccount().getCash()<<"\tName: "<<this->getAccount().getCustomerName()<<
                 "\tSurname: "<<this->getAccount().getCustomerSurname()<<std::endl;
 }
@@ -75,8 +130,6 @@ void Bank::readAccountDetails(std::string ssNumber)
 {
     std::ifstream file;
     std::string path = accountPath+ssNumber+".txt";
-
-    std::string details;
 
     file.open(path);
     if(!file)
@@ -87,15 +140,23 @@ void Bank::readAccountDetails(std::string ssNumber)
     {
         std::string name;
         std::string surname;
-        float cash;
+        double cash;
 
-        file >> ssNumber >> cash >> name >> surname; 
+        file >> ssNumber >> cash >> name >> surname;
         //std::getline(file, details);
-        std::cout<<"Social Security Number: "<<ssNumber<<"\tCash: "<<cash<<"\tName: "<<name<<"\tSurname: "<<surname<<std::endl;
+        //std::cout<<"Social Security Number: "<<ssNumber<<"\tCash: "<<cash<<"\tName: "<<name<<"\tSurname: "<<surname<<std::endl;
+        // TODO asagisi calismiyor incele daah sonra eclipse debug ile.
+        //std::cout<<"Buradan sonra bozuyor."<<std::endl;
+        /*
         this->getAccount().setSocialSecurityNumber(ssNumber);
         this->getAccount().setCash(cash);
         this->getAccount().setCustomerName(name);
         this->getAccount().setCustomerSurname(surname);
+        */
+        m_account->setSocialSecurityNumber(ssNumber);
+        m_account->setCash(cash);
+        m_account->setCustomerName(name);
+        m_account->setCustomerSurname(surname);
     }
 
     file.close();
@@ -112,13 +173,13 @@ void Bank::createNewAccount()
     {
         system("cls");
         std::cout<<"NEW ACCOUNT CREATED!"<<std::endl;
-        initializeBankSystem();
+        //initializeBankSystem(); upper class or main must be call this !!!!!
     }
     else
     {
         system("cls");
         std::cout<<"Account Already Exist!"<<std::endl;
-        initializeBankSystem();
+        //initializeBankSystem(); upper class or main must be call this !!!!!
     }
 
 
@@ -134,16 +195,25 @@ bool Bank::checkAccountExistence(std::string str)
 
     if(!file)
     {
-        //if file does not exist we can create it! First close the input file object
-        file.open(path, std::fstream::in | std::fstream::out | std::fstream::trunc);
+        //if file does not exist and userChoice is CREATE_ACCOUNT we can create it!
+        if(getUserChoice() == CustomerInterface::CREATE_NEW_ACCOUNT)
+        {
+            file.open(path, std::fstream::in | std::fstream::out | std::fstream::trunc);
 
-        //Then fill the informations
-        file <<m_account->getSocialSecurityNumber()<<"\t"<<m_account->getCash()<<"\t"
-            <<m_account->getCustomerName()<<"\t"<<m_account->getCustomerSurname();
-        file.close();
+            //Then fill the informations
+            file <<m_account->getSocialSecurityNumber()<<"\t"<<m_account->getCash()<<"\t"
+                <<m_account->getCustomerName()<<"\t"<<m_account->getCustomerSurname();
+            file.close();
+        }
+        else //Another operations are selected such as DEPOSIT, WITHDRAW
+        {
+            std::cout<<"There is no account related with given Social Security Number"<<std::endl;
+        }
+
         return true;
     }
     else{
+        file.close();
         return false;
     }
 }

@@ -1,1 +1,1 @@
-123456789	0	Atakan	Akmarul
+123456789	9999.99	Atakan	Akmarul

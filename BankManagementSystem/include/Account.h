@@ -39,12 +39,12 @@ class Account
             m_surName = customerSurname;
         }
 
-        float getCash() const
+        double getCash() const
         {
             return m_cash;
         }
 
-        void setCash(float newCash)
+        void setCash(double newCash)
         {
             m_cash = newCash;
         }
@@ -53,7 +53,7 @@ class Account
         std::string m_socialSecurityNumber;
         std::string m_name;
         std::string m_surName;
-        float m_cash;
+        double m_cash;
 };
 
 #endif // ACCOUNT_H

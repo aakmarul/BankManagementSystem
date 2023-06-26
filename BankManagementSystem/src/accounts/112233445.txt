@@ -1,1 +1,1 @@
-112233445	0	Atakan 	Akmarul
+112233445	100.001	Atakan	Akmarul

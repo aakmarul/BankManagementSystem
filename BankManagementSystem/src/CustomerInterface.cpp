@@ -14,7 +14,7 @@ CustomerInterface::~CustomerInterface()
 std::string CustomerInterface::ShowAccountDetailsInterface()
 {
     system("cls");
-    std::cout<<"Please enter the Social Security Number to Access Account Details"<<std::endl;
+    std::cout<<"Please enter the Social Security Number to Proceed"<<std::endl;
     std::cout<<">> ";
     std::string ssNumber;
     std::getline(std::cin, ssNumber);
@@ -94,6 +94,7 @@ CustomerInterface::USER_CHOICE CustomerInterface::getUserInputs()
         break;
     default:
         std::cout<<"You entered the invalid input. Please try again..."<<std::endl;
+        std::cout<<">> ";
         m_invalidInputFlag = true;
         choice = INVALID_INPUT;
         //Later it may be added some warning, error output .

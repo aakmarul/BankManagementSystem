@@ -15,6 +15,11 @@ class Bank
 
         const std::string accountPath = "C:\\CodeblocksWorkspace\\BankManagementSystem\\src\\accounts\\";
 
+        typedef enum TRANSACTION_TYPE{
+            DEPOSIT = 0,
+            WITHDRAW = 1
+        }TRANSACTION_TYPE;
+
         void initializeBankSystem();
 
         void callTheOperations(CustomerInterface::USER_CHOICE);
@@ -22,6 +27,12 @@ class Bank
         void createNewAccount();
 
         void showAccountDetails();
+
+        void makeTransaction(TRANSACTION_TYPE);
+
+        void executeTransactionProcess(TRANSACTION_TYPE);
+
+        void writeNewInformationToAccount();
 
         void readAccountDetails(std::string);
 
@@ -47,9 +58,21 @@ class Bank
             return *m_customerInterface;
         }
 
+        CustomerInterface::USER_CHOICE getUserChoice()
+        {
+            return m_userChoice;
+        }
+
+        void setUserChoice(CustomerInterface::USER_CHOICE userChoice)
+        {
+            m_userChoice = userChoice;
+        }
+
     protected:
 
     private:
+        CustomerInterface::USER_CHOICE m_userChoice;
+         std::string ssNumber;
          Account* m_account;
          CustomerInterface* m_customerInterface;
 };
