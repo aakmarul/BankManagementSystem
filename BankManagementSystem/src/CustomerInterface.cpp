@@ -17,7 +17,7 @@ std::string CustomerInterface::ShowAccountDetailsInterface()
     std::cout<<"Please enter the Social Security Number to Proceed"<<std::endl;
     std::cout<<">> ";
     std::string ssNumber;
-    std::getline(std::cin, ssNumber);
+    std::getline(std::cin, ssNumber); //TODO: check this ssNumber valid or not
 
     return ssNumber;
 }
@@ -67,23 +67,19 @@ CustomerInterface::USER_CHOICE CustomerInterface::getUserInputs()
         std::cout<<"Please wait... Starting New Account Template."<<std::endl;
         m_invalidInputFlag = false;
         choice = CREATE_NEW_ACCOUNT;
-        //Call the method that creates new Account.
         break;
     case SHOW_ACCOUNT_DETAILS:
         std::cout<<"Please enter the Social Security Number to access account details."<<std::endl;
-        // Call the method that shows details of account.
         m_invalidInputFlag = false;
         choice = SHOW_ACCOUNT_DETAILS;
         break;
     case DEPOSIT_MONEY:
         std::cout<<"Please enter the amount of money to deposit"<<std::endl;
-        //Call the method that deposit money to account, it probably needs to be check which account to be."
         m_invalidInputFlag = false;
         choice = DEPOSIT_MONEY;
         break;
     case WITHDRAW_MONEY:
         std::cout<<"Please enter the amount of money to withdraw"<<std::endl;
-        //Call the method that withdraw money from account, it probably needs to be check which account to be."
         m_invalidInputFlag = false;
         choice = WITHDRAW_MONEY;
         break;
@@ -97,7 +93,6 @@ CustomerInterface::USER_CHOICE CustomerInterface::getUserInputs()
         std::cout<<">> ";
         m_invalidInputFlag = true;
         choice = INVALID_INPUT;
-        //Later it may be added some warning, error output .
         break;
     }
     return choice;

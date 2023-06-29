@@ -13,6 +13,7 @@ int main()
 {
     cout << "Welcome to the AA Bank!" << endl;
     Bank* myBank = new Bank();
-    myBank->initializeBankSystem();
+    myBank->run();
+    
     return 0;
 }

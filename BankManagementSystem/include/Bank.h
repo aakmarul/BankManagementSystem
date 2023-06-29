@@ -20,23 +20,36 @@ class Bank
             WITHDRAW = 1
         }TRANSACTION_TYPE;
 
-        void initializeBankSystem();
+        typedef enum PROCESS_STATUS{
+            INVALID_CHOICE,
+            NEW_ACCOUNT_CREATED,
+            ACCOUNT_ALREADY_EXIST,
+            ACCOUNT_CREATION_FAILED,
+            ACCOUNT_DOES_NOT_FOUND,
+            ACCOUNT_DETAILS_SHOWED,
+            MONEY_DEPOSITED,
+            MONEY_WITHDRAWN,
+            MONEY_GREATER_THAN_ACC_CASH,
+            EXIT_THE_SYSTEM
+        }PROCESS_STATUS;
 
-        void callTheOperations(CustomerInterface::USER_CHOICE);
+        PROCESS_STATUS run();
 
-        void createNewAccount();
+        PROCESS_STATUS callTheOperations(CustomerInterface::USER_CHOICE);
 
-        void showAccountDetails();
+        PROCESS_STATUS createNewAccount();
 
-        void makeTransaction(TRANSACTION_TYPE);
+        PROCESS_STATUS showAccountDetails();
 
-        void executeTransactionProcess(TRANSACTION_TYPE);
+        PROCESS_STATUS makeTransaction(TRANSACTION_TYPE);
+
+        PROCESS_STATUS executeTransactionProcess(TRANSACTION_TYPE);
 
         void writeNewInformationToAccount();
 
-        void readAccountDetails(std::string);
+        PROCESS_STATUS readAccountDetails(std::string);
 
-        bool checkAccountExistence(std::string);
+        PROCESS_STATUS checkAccountExistence(std::string);
 
         void setAccount(Account* account)
         {

@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1687122929 source:c:\codeblocksworkspace\bankmanagementsystem\main.cpp
+1687896931 source:c:\codeblocksworkspace\bankmanagementsystem\main.cpp
 	<iostream>
 	<Bank.h>
 
@@ -15,10 +15,10 @@
 	<stdlib.h>
 	"Account.h"
 
-1687816612 source:c:\codeblocksworkspace\bankmanagementsystem\src\customerinterface.cpp
+1688038035 source:c:\codeblocksworkspace\bankmanagementsystem\src\customerinterface.cpp
 	"CustomerInterface.h"
 
-1687820828 c:\codeblocksworkspace\bankmanagementsystem\include\bank.h
+1688039835 c:\codeblocksworkspace\bankmanagementsystem\include\bank.h
 	<Account.h>
 	<CustomerInterface.h>
 	<string.h>
