@@ -26,10 +26,15 @@ Bank::PROCESS_STATUS Bank::run()
     {
         setUserChoice(m_customerInterface->getUserInputs());
     }
+
+    if(m_customerInterface->getInvalidInputFlag() == false)
+    { 
+        
+    }
     //Later call the execute and seperate initialization and functional operations
     //TODO Bank::execute(userChoice)
-    m_customerInterface->setInvalidInputFlag(true); //Flag set true to call interface later again take user inputs
     status = callTheOperations(getUserChoice());
+    m_customerInterface->setInvalidInputFlag(true); //Flag set true to call interface later again take user inputs
     return status;
 
 }
@@ -41,7 +46,6 @@ Bank::PROCESS_STATUS Bank::callTheOperations(CustomerInterface::USER_CHOICE user
     {
     case CustomerInterface::NO_CHOICE:
     case CustomerInterface::INVALID_INPUT:
-        std::cout<<"This is an ERROR case! Operation shutting down!"<<std::endl; //TODO: implement shut down operation
         status = INVALID_CHOICE;
         break;
     case CustomerInterface::CREATE_NEW_ACCOUNT:
@@ -61,6 +65,7 @@ Bank::PROCESS_STATUS Bank::callTheOperations(CustomerInterface::USER_CHOICE user
         break;
     case CustomerInterface::EXIT:
         std::cout<<"Exiting"<<std::endl; //TODO implement exit operation
+        status = EXIT_THE_SYSTEM;
     default:
         break;
 
@@ -84,7 +89,7 @@ Bank::PROCESS_STATUS Bank::executeTransactionProcess(TRANSACTION_TYPE ttype)
     if(ttype == DEPOSIT) //
     {
         double money;
-
+        
         system("cls");
         std::cout<<"Enter the money to deposit your account!"<<std::endl;
         std::cout<<">> ";
@@ -96,7 +101,7 @@ Bank::PROCESS_STATUS Bank::executeTransactionProcess(TRANSACTION_TYPE ttype)
     }
     else //WITHDRAW operation
     {
-        double money;
+        double money; 
 
         //system("cls");
         std::cout<<"Enter the money withdraw from your account!"<<std::endl;
@@ -140,7 +145,7 @@ Bank::PROCESS_STATUS Bank::showAccountDetails()
         std::cout<<"Social Security Number: "<<m_account->getSocialSecurityNumber()<<
                     "\tCash: "<<this->getAccount().getCash()<<"\tName: "<<this->getAccount().getCustomerName()<<
                     "\tSurname: "<<this->getAccount().getCustomerSurname()<<std::endl;
-        status = ACCOUNT_DETAILS_SHOWED;
+        status = ACCOUNT_DETAILS_SHOWED;    
     }
     else{
         status = INVALID_CHOICE;

@@ -14,10 +14,17 @@ CustomerInterface::~CustomerInterface()
 std::string CustomerInterface::ShowAccountDetailsInterface()
 {
     system("cls");
-    std::cout<<"Please enter the Social Security Number to Proceed"<<std::endl;
-    std::cout<<">> ";
     std::string ssNumber;
-    std::getline(std::cin, ssNumber); //TODO: check this ssNumber valid or not
+    if(m_invalidInputFlag == true)
+    {
+        std::cout<<"Please enter the Social Security Number to Proceed"<<std::endl;
+        std::cout<<">> ";
+        std::getline(std::cin, ssNumber); //TODO: check this ssNumber valid or not
+    }
+    else
+    {
+
+    }
 
     return ssNumber;
 }
