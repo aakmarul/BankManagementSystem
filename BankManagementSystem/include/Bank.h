@@ -66,9 +66,9 @@ class Bank
             m_customerInterface = customerInterface;
         }
 
-        CustomerInterface getCustomerInterface()
+        CustomerInterface* getCustomerInterface()
         {
-            return *m_customerInterface;
+            return m_customerInterface;
         }
 
         CustomerInterface::USER_CHOICE getUserChoice()

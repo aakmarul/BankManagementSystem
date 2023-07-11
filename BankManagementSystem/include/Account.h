@@ -9,6 +9,11 @@ class Account
         Account();
         virtual ~Account();
 
+        Account* getAccount()
+        {
+            return this;
+        }
+
         std::string getSocialSecurityNumber() const
         {
             return m_socialSecurityNumber;

@@ -1,6 +1,6 @@
 #include "Bank.h"
 
-Bank::Bank()
+Bank::Bank()  
 {
     //Call the Customer Interface and Account classes
     Bank::setAccount(new Account());
@@ -22,19 +22,15 @@ Bank::PROCESS_STATUS Bank::run()
     m_customerInterface->initializeCustomerInterfaceSystem();
 
     //CustomerInterface::USER_CHOICE userChoice = CustomerInterface::NO_CHOICE;
-    while(m_customerInterface->getInvalidInputFlag() == true)
+
+    if(m_customerInterface->getInvalidInputFlag() == true)
     {
         setUserChoice(m_customerInterface->getUserInputs());
     }
 
-    if(m_customerInterface->getInvalidInputFlag() == false)
-    { 
-        
-    }
-    //Later call the execute and seperate initialization and functional operations
-    //TODO Bank::execute(userChoice)
+    
     status = callTheOperations(getUserChoice());
-    m_customerInterface->setInvalidInputFlag(true); //Flag set true to call interface later again take user inputs
+    //m_customerInterface->setInvalidInputFlag(true); //Flag set true to call interface later again take user inputs
     return status;
 
 }
@@ -53,10 +49,10 @@ Bank::PROCESS_STATUS Bank::callTheOperations(CustomerInterface::USER_CHOICE user
         break;
     case CustomerInterface::SHOW_ACCOUNT_DETAILS:
         std::cout<<"Showing account details"<<std::endl;
+        m_customerInterface->setInvalidInputFlag(true);
         status = showAccountDetails();
         break;
     case CustomerInterface::DEPOSIT_MONEY:
-        std::cout<<"Enter the money to deposit"<<std::endl; //TODO implement deposit money input and deposit methods
         status = makeTransaction(DEPOSIT);
         break;
     case CustomerInterface::WITHDRAW_MONEY:
@@ -77,7 +73,7 @@ Bank::PROCESS_STATUS Bank::callTheOperations(CustomerInterface::USER_CHOICE user
 Bank::PROCESS_STATUS Bank::makeTransaction(TRANSACTION_TYPE ttype)
 {
     PROCESS_STATUS status = INVALID_CHOICE;
-    ssNumber = this->m_customerInterface->ShowAccountDetailsInterface();
+    ssNumber = this->m_customerInterface->ShowAccountDetailsInterface(m_account);
     status = readAccountDetails(ssNumber);
     status = executeTransactionProcess(ttype);
     return status;
@@ -90,12 +86,13 @@ Bank::PROCESS_STATUS Bank::executeTransactionProcess(TRANSACTION_TYPE ttype)
     {
         double money;
         
-        system("cls");
+        //system("cls"); TODO geri ac
         std::cout<<"Enter the money to deposit your account!"<<std::endl;
         std::cout<<">> ";
         std::cin>> money; //TODO check money is valid double format or not?
-        m_account->setCash(m_account->getCash() + money);
+        m_account->setCash(m_account->getCash() + static_cast<double>(money));
         std::cout<<"The new cash is :"<<m_account->getCash()<<std::endl;
+        //system("cls");
         writeNewInformationToAccount();
         status = MONEY_DEPOSITED;
     }
@@ -110,7 +107,7 @@ Bank::PROCESS_STATUS Bank::executeTransactionProcess(TRANSACTION_TYPE ttype)
         if(money > m_account->getCash())
         {
             //TODO throw error/warning. Entered money cannot be greater than cash value of the related account
-            system("cls");
+            //system("cls"); TODO geri ac
             std::cout<<"The amount to be withdrawn cannot be higher than the cash value in the account."<<std::endl;
             //callTheOperations(CustomerInterface::WITHDRAW_MONEY); This pass eill be studied for now it ends the program.
             status = MONEY_GREATER_THAN_ACC_CASH;
@@ -139,7 +136,10 @@ void Bank::writeNewInformationToAccount()
 Bank::PROCESS_STATUS Bank::showAccountDetails()
 {
     PROCESS_STATUS status = INVALID_CHOICE;
-    ssNumber = this->m_customerInterface->ShowAccountDetailsInterface();
+
+    ssNumber = this->m_customerInterface->ShowAccountDetailsInterface(m_account);
+
+
     if(ACCOUNT_DETAILS_SHOWED == readAccountDetails(ssNumber))
     {
         std::cout<<"Social Security Number: "<<m_account->getSocialSecurityNumber()<<
@@ -148,7 +148,7 @@ Bank::PROCESS_STATUS Bank::showAccountDetails()
         status = ACCOUNT_DETAILS_SHOWED;    
     }
     else{
-        status = INVALID_CHOICE;
+        status = ACCOUNT_DOES_NOT_FOUND;
     }
 
     return status;
@@ -164,7 +164,7 @@ Bank::PROCESS_STATUS Bank::readAccountDetails(std::string ssNumber)
     file.open(path);
     if(!file)
     {
-        std::cout<<"THERE IS NO RECORD RELATED WITH THESE SSNUMBER"; //TODO validate ssNumber is suitable or not? 9-digit integer.
+        std::cout<<"There is no record found related with these social security number!"<<std::endl; //TODO validate ssNumber is suitable or not? 9-digit integer.
         status = ACCOUNT_DOES_NOT_FOUND;
     }
     else
@@ -174,16 +174,6 @@ Bank::PROCESS_STATUS Bank::readAccountDetails(std::string ssNumber)
         double cash;
 
         file >> ssNumber >> cash >> name >> surname;
-        //std::getline(file, details);
-        //std::cout<<"Social Security Number: "<<ssNumber<<"\tCash: "<<cash<<"\tName: "<<name<<"\tSurname: "<<surname<<std::endl;
-        // TODO asagisi calismiyor incele daah sonra eclipse debug ile.
-        //std::cout<<"Buradan sonra bozuyor."<<std::endl;
-        /*
-        this->getAccount().setSocialSecurityNumber(ssNumber);
-        this->getAccount().setCash(cash);
-        this->getAccount().setCustomerName(name);
-        this->getAccount().setCustomerSurname(surname);
-        */
         m_account->setSocialSecurityNumber(ssNumber);
         m_account->setCash(cash);
         m_account->setCustomerName(name);
@@ -199,6 +189,7 @@ Bank::PROCESS_STATUS Bank::createNewAccount()
 {
     PROCESS_STATUS status = INVALID_CHOICE;
     //Receive the necessary information from customer to open new account
+    
     m_customerInterface->AccountCreatorInterface(m_account);
     //All information received
     //Check entered social security number has an account or not, If there is return error and asks to load existing account
@@ -208,17 +199,18 @@ Bank::PROCESS_STATUS Bank::createNewAccount()
 
     if(status == NEW_ACCOUNT_CREATED)
     {
-        system("cls");
+        //TODO system("cls");
         std::cout<<"NEW ACCOUNT CREATED!"<<std::endl;
     }
     else if(status == ACCOUNT_DOES_NOT_FOUND)
     {
-        system("cls");
+        //TODO system("cls");
         std::cout<<"ACCOUNT DOES NOT FOUND"<<std::endl;
     }
     else if(status == ACCOUNT_ALREADY_EXIST)
     {
-        system("cls");
+        //Informations read from the txt file and store it proceed operations with it.
+        //TODO readAccountDetails(ssNumber);
         std::cout<<"ACCOUNT ALREADY EXIST"<<std::endl;
     }
     else{

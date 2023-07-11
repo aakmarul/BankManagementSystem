@@ -11,20 +11,13 @@ CustomerInterface::~CustomerInterface()
     //dtor
 }
 
-std::string CustomerInterface::ShowAccountDetailsInterface()
+std::string CustomerInterface::ShowAccountDetailsInterface(Account* account)
 {
-    system("cls");
+    //TODO system("cls");
     std::string ssNumber;
-    if(m_invalidInputFlag == true)
-    {
-        std::cout<<"Please enter the Social Security Number to Proceed"<<std::endl;
-        std::cout<<">> ";
-        std::getline(std::cin, ssNumber); //TODO: check this ssNumber valid or not
-    }
-    else
-    {
-
-    }
+    std::cout<<"Please enter the Social Security Number to Proceed"<<std::endl;
+    std::cout<<">> ";
+    std::getline(std::cin, ssNumber); //TODO: check this ssNumber valid or not
 
     return ssNumber;
 }
@@ -35,7 +28,7 @@ void CustomerInterface::AccountCreatorInterface(Account* account)
     std::string surName;
     std::string ssNumber;
 
-    system("cls");
+    //TODOsystem("cls");
     std::cout<<"Please fill the required information given in below!"<<std::endl;
     std::cout<<"Name :";
     std::getline(std::cin, name);
@@ -55,7 +48,6 @@ CustomerInterface::USER_CHOICE CustomerInterface::getUserInputs()
     std::string userInput;
     std::getline(std::cin, userInput);
 
-    std::cout<<userInput<<" is selected"<<std::endl;
 
     //Check given input is an integer or not ?
     if(!checkInputisInteger(userInput))
@@ -76,17 +68,14 @@ CustomerInterface::USER_CHOICE CustomerInterface::getUserInputs()
         choice = CREATE_NEW_ACCOUNT;
         break;
     case SHOW_ACCOUNT_DETAILS:
-        std::cout<<"Please enter the Social Security Number to access account details."<<std::endl;
         m_invalidInputFlag = false;
         choice = SHOW_ACCOUNT_DETAILS;
         break;
     case DEPOSIT_MONEY:
-        std::cout<<"Please enter the amount of money to deposit"<<std::endl;
         m_invalidInputFlag = false;
         choice = DEPOSIT_MONEY;
         break;
     case WITHDRAW_MONEY:
-        std::cout<<"Please enter the amount of money to withdraw"<<std::endl;
         m_invalidInputFlag = false;
         choice = WITHDRAW_MONEY;
         break;

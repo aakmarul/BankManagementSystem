@@ -27,7 +27,7 @@ class CustomerInterface
 
         void AccountCreatorInterface(Account* account);
 
-        std::string ShowAccountDetailsInterface();
+        std::string ShowAccountDetailsInterface(Account* account);
 
         USER_CHOICE getUserInputs();
 
@@ -43,11 +43,22 @@ class CustomerInterface
             m_invalidInputFlag = flag;
         }
 
+        bool getItsProceededAction()
+        {
+            return m_itsProceededAction;
+        }
+
+        void setItsProceededAction(bool itsProceededAction)
+        {
+            m_itsProceededAction = itsProceededAction;
+        }
+
     protected:
 
     private:
         //FLAGS
         bool m_invalidInputFlag;
+        bool m_itsProceededAction;
         ///////
         int op;
 };
